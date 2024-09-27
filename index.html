@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beef Purchasing Model Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>BEEF PURCHASING MODEL</h1>
+        <h2>Full Set Model Simulation</h2>
+
+        <!-- Input section -->
+        <div class="input-section">
+            <h3>Enter Your Average Monthly Beef Consumption</h3>
+            <label for="guestConsumption">Guest Monthly Beef Consumption (KG):</label>
+            <input type="number" id="guestConsumption" name="guestConsumption" min="0">
+            <label for="staffConsumption">Staff Monthly Beef Consumption (KG):</label>
+            <input type="number" id="staffConsumption" name="staffConsumption" min="0">
+            <button onclick="calculate()">Calculate</button>
+        </div>
+
+        <!-- Result comparison section -->
+        <div class="result-section">
+            <h3>Purchasing Model Comparison</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Beef Cuts (KG)</th>
+                        <th>Number of Steers</th>
+                        <th>Environmental Impact (CO₂, Water, Land)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Full Set Model</td>
+                        <td id="fullSetBeef"></td>
+                        <td id="fullSetSteers"></td>
+                        <td id="fullSetEnvImpact"></td>
+                    </tr>
+                    <tr>
+                        <td>Current Premium Only Model</td>
+                        <td id="premiumOnlyBeef"></td>
+                        <td id="premiumOnlySteers"></td>
+                        <td id="premiumOnlyEnvImpact"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        function calculate() {
+            // Get input values
+            let guestConsumption = parseFloat(document.getElementById('guestConsumption').value);
+            let staffConsumption = parseFloat(document.getElementById('staffConsumption').value);
+
+            if (isNaN(guestConsumption) || isNaN(staffConsumption)) {
+                alert('Please enter valid numbers for both guest and staff consumption.');
+                return;
+            }
+
+            // Example assumptions for the Full Set and Premium Only models
+            let fullSetBeefPerSteer = 400; // Total kg of beef in a full set steer
+            let premiumBeefPerSteer = 120; // Only premium cuts from a steer in premium-only model
+
+            // Environmental impacts per steer
+            let fullSetCO2 = 1000; // Example CO2 impact per steer
+            let premiumOnlyCO2 = 1200; // Higher CO2 for Premium Only due to more cattle required
+            let waterUsage = 50000; // Water usage in liters per steer (same for both models)
+            let landUsage = 10; // Land usage in hectares per steer
+
+            // Full Set Model Calculations
+            let totalFullSetBeef = guestConsumption + staffConsumption;
+            let fullSetSteers = totalFullSetBeef / fullSetBeefPerSteer;
+            let fullSetEnvImpact = `CO₂: ${Math.round(fullSetSteers * fullSetCO2)} kg, Water: ${Math.round(fullSetSteers * waterUsage)} liters, Land: ${Math.round(fullSetSteers * landUsage)} hectares`;
+
+            // Premium Only Model Calculations
+            let totalPremiumOnlyBeef = guestConsumption; // Only guests consume premium cuts
+            let premiumOnlySteers = totalPremiumOnlyBeef / premiumBeefPerSteer;
+            let premiumOnlyEnvImpact = `CO₂: ${Math.round(premiumOnlySteers * premiumOnlyCO2)} kg, Water: ${Math.round(premiumOnlySteers * waterUsage)} liters, Land: ${Math.round(premiumOnlySteers * landUsage)} hectares`;
+
+            // Update results in the table
+            document.getElementById('fullSetBeef').innerText = `${Math.round(totalFullSetBeef)} KG`;
+            document.getElementById('fullSetSteers').innerText = `${Math.round(fullSetSteers)} Steers`;
+            document.getElementById('fullSetEnvImpact').innerText = fullSetEnvImpact;
+
+            document.getElementById('premiumOnlyBeef').innerText = `${Math.round(totalPremiumOnlyBeef)} KG`;
+            document.getElementById('premiumOnlySteers').innerText = `${Math.round(premiumOnlySteers)} Steers`;
+            document.getElementById('premiumOnlyEnvImpact').innerText = premiumOnlyEnvImpact;
+        }
+    </script>
+
+</body>
+</html>
